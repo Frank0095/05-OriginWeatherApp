@@ -1,0 +1,95 @@
+<!doctype html>
+<html >
+    <head>
+        <title>Origin Weather App</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel='stylesheet' href='app/index.css'>
+    </head>
+    <body ng-app='weatherApp' ng-controller="weatherAppCtrl as wCtrl">
+        <div class='container'>
+            <div class='jumbotron' style='margin-top: 2em' >
+                <h1>Origin Weather Application</h1>
+                <p>Always know if you'll need an umbrella!</p>
+            </div>
+        </div>
+        <!--Buttons and Search Bar-->
+        <div>
+            <div class='container'>
+                <div class="row col-sm-8">
+                    <div class="btn-group">
+                    <button type="button" class="btn btn-primary"ng-click="wCtrl.getWeather('sandiego')">San Diego</button>
+                    <button type="button" class="btn btn-primary"ng-click="wCtrl.getWeather('newyork')">New York</button>
+                    <button type="button" class="btn btn-primary"ng-click="wCtrl.getWeather('washingtondc')">Washington D.C</button>
+                    <button type="button" class="btn btn-primary"ng-click="wCtrl.getWeather('london')">London</button>
+                    <button type="button" class="btn btn-primary"ng-click="wCtrl.getWeather('tokyo')">Tokyo</button>
+                    </div>
+                </div>
+            </div>
+            <div class='container'>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form>
+                            <div class="input-group">
+                            <input ng-model='wCtrl.city' type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click ='wCtrl.getWeather(wCtrl.city)'>Go!</button>
+                            </span>
+                            </div><!-- /input-group -->
+                        </form>
+                    </div><!-- /.col-lg-12 -->
+                </div><!-- /.row -->
+            </div>
+        </div>
+        <div ng-show="wCtrl.done" class='container' style="margin-top: 2em">
+            <!--City Information-->
+            <div class='col-md-6'>
+                <div class="panel panel-info">
+                    <div class="panel-heading">City Information</div>
+                    <div class="panel-body">
+                        
+                        <div class="text-center"style='font-size:250%;'><img ng-src="http://openweathermap.org/img/w/{{wCtrl.weather.weather[0].icon}}.png" style="position:relative"></img>{{wCtrl.weather.name}}</div>
+                        <div class="text-center small">
+                            <br>Lat/Long: {{wCtrl.weather.coord.lat}},{{wCtrl.weather.coord.lon}}
+                        </div>
+                        <hr>
+                        <div class="col-md-4 text-center"><b>Temperature(F)</b>
+                            <br/>{{((wCtrl.weather.main.temp - 273.15) * 9/5) +32 | number: 2}}F
+                            <br/>
+                            <br/><b>Lowest Temp (F)</b>
+                            <br/>{{((wCtrl.weather.main.temp_min - 273.15) * 9/5) +32 |number:2}}F
+                        </div>
+                        <div class="col-md-4 text-center"><b>Pressure</b>
+                            <br/>{{wCtrl.weather.main.pressure}}
+                            <br/>
+                            <br/><b>Highest Temp (F)</b>
+                            <br/>{{((wCtrl.weather.main.temp_max - 273.15) * 9/5) +32 |number:2}}F
+                        </div>
+                        <div class="col-md-4 text-center"><b>Humidity</b>
+                            <br/>{{wCtrl.weather.main.humidity}}%
+                            <br/>
+                            <br/><b>Wind Speed</b>
+                            <br/>{{wCtrl.weather.wind.speed}}mph
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Search History-->
+            <div class='col-md-6' id='searchHistory'>
+                <div class="panel panel-info">
+                    <div class="panel-heading">Search History</div>
+                    <div class="panel-body">
+                         <table class="table table-striped">
+                             <tr ng-repeat="search in wCtrl.output | limitTo:-5 | orderBy: 'time':true ">
+                                 <td>{{search.city}}</td>
+                                 <td>{{search.date}} <br> {{search.time}}</td>
+                             </tr>
+                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script><script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+        <script src='app/index.js'></script>
+        <script src='app/app.js'></script>
+    </body>
+</html>
